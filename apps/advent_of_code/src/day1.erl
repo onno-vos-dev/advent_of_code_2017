@@ -1,12 +1,12 @@
 -module(day1).
 
--export([ one/0
+-export([ run/0
         , parallel/0
         ]).
 
 -define(REX_OPTS, [{capture, first, list}, global]).
 
-one() ->
+run() ->
   L = input(),
   {_, A} = captcha(L, 1),
   {_, B} = captcha(L, length(L) div 2),

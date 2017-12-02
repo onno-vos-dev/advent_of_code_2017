@@ -1,9 +1,9 @@
 -module(day2).
 
--export([ two/0
+-export([ run/0
         ]).
 
-two() ->
+run() ->
   L = input(),
   A = solve_a(L),
   B = solve_b(L),
