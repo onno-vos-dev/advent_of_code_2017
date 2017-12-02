@@ -3,12 +3,11 @@
 -export([ two/0
         ]).
 
-%% My solution for 2b is pretty damn nasty. Will try to clean up later tonight
 two() ->
   L = input(),
   A = solve_a(L),
   B = solve_b(L),
-  {{day1, A}, {day2, B}}.
+  {{day2a, A}, {day2b, B}}.
 
 solve_a(List) ->
   lists:sum(
@@ -20,21 +19,18 @@ solve_a(List) ->
 solve_b(List) ->
   lists:foldl(
     fun(Row, Acc) ->
-        lists:sum(
-          lists:flatten(
-            lists:map(
-              fun(Val1) ->
-                  lists:filtermap(
-                    fun(Val2) ->
-                        case Val1 == Val2 orelse (Val1 rem Val2 =/= 0) of
-                          true -> false;
-                          _ -> {true, Acc + (Val1 div Val2)}
-                        end
-                    end, Row)
-              end, Row)
-           )
-         )
+        Acc + div_sum(Row)
     end, 0, List).
+
+div_sum(Row) ->
+  lists:foldl(
+    fun(V1, Acc) ->
+        lists:foldl(
+          fun(V2, A) when V1 =/= V2 andalso (V1 rem V2 =:= 0) ->
+              A + (V1 div V2);
+             (_,A) -> A
+          end, Acc, Row)
+    end, 0, Row).
 
 input() ->
   {ok, Bin} = file:read_file(code:priv_dir(advent_of_code) ++ "/day2.txt"),
